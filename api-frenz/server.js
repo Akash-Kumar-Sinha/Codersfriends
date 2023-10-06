@@ -1,9 +1,10 @@
 const express = require('express');
+const cors = require('cors');
 const bodyParser = require('body-parser');
 const app = express();
 
 app.use(bodyParser.json());
-// app.use(cors())
+app.use(cors());
 
 const db = require('knex')({
     client: 'pg',
@@ -15,6 +16,19 @@ const db = require('knex')({
       database : 'codefrenz'
     }
   });
+
+
+app.get('/', (req, res) => {
+    db.select('*').from('users')
+    .then(users =>{
+        res.json(users);
+    })
+    .catch(error => {
+        console.error('Error fetching users:', error);
+        res.status(500).json({ error: 'Internal server error' });
+    });
+});
+
 
 app.post('/register', (req, res)=>{
     const {name, link} = req.body;
@@ -28,10 +42,12 @@ app.post('/register', (req, res)=>{
                 linkedin: link
             })
             .into('users')
-            .then(()=>{
+            .returning('*')
+            .then((user)=>{
                 trx.commit();
                 res.status(200).json({ message: 'User Registered Successfully' })
-            }).catch((err) => {
+            })
+            .catch((err) => {
                 console.error('Error inserting user:', err);
                 trx.rollback(); 
                 res.status(500).json({ error: 'Internal server error' });
@@ -39,7 +55,7 @@ app.post('/register', (req, res)=>{
         })
 
 
-    }else if (link.startsWith('https://twitter.com/')){
+    }else if (link.startsWith('https://x.com/')){
 
         db.transaction(trx => {
             trx.insert({
@@ -48,7 +64,7 @@ app.post('/register', (req, res)=>{
                 linkedin: null
             })
             .into('users')
-            .then(()=>{
+            .then((user)=>{
                 trx.commit();
                 res.status(200).json({ message: 'User Registered Successfully' })
             }).catch((err) => {

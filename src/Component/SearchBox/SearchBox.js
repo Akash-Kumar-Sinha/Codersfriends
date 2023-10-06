@@ -1,13 +1,13 @@
 import React from "react";
 import './SearchBox.css'
 
-const SearchBox = ({searchfield, SearchChange}) => {
+const SearchBox = ({SearchChange}) => {
     return(
         <div className="pa2">
             <input 
                 className="pa3 bg-transparent hover-effect"
                 type="search" 
-                placeholder="Search Robots"
+                placeholder="Search frnz"
                 onChange={SearchChange}/>
         </div>
     )
