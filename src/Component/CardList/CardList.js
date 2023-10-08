@@ -17,6 +17,7 @@ const CardList = ({filteredRobots}) => {
     })
     return(
         <div className="cardlist justify-center">
+            
             {CardComponent}
         </div>
     )

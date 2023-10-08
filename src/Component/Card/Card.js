@@ -4,7 +4,7 @@ const Card = (props) => {
     const {name, link, id} = props;
     return (
         <div className="card tc bg-light-green dib br3 pa3 ma2 bw2 shadow-5">
-            <p>About</p>
+            
             <img src={`https://robohash.org/${id}?200x200`} alt="robots"/>
 
             <div>

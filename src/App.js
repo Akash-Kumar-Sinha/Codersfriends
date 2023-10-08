@@ -42,6 +42,10 @@ const App = () => {
         setSearchField(event.target.value);
     }
 
+    const onSearchAkash = () =>{
+        setSearchField('Akash Kumar Sinha')
+    }
+
     const filteredRobots = fetchedData.filter(data => {
         return data.name.toLowerCase().includes(searchfield.toLowerCase());
     });
@@ -56,18 +60,24 @@ const App = () => {
         <div className="app">
             <PopUp trigger={register}>
 
-                <Register onRouteChange={onRouteChange} setRegister={setRegister} fetchData={fetchData} />
+                <Register onRouteChange={onRouteChange} setRegister={setRegister} fetchData={fetchData}/>
 
             </PopUp>
             {route === 'home'
             ?<div>
+                
+                <p className="f4 absolute top-0 left-2 mr2 custom-letter-spacing"
+                onClick={onSearchAkash}
+                >Akash Kumar Sinha
+                </p>
+
                 <p className="f4 absolute top-0 right-2 mr2 custom-letter-spacing"
                 onClick={onRegisterClick}
                 >Register</p>
                     
                 <div className="tc">
                     <h1 className="f1">CodersFriends</h1>
-                    <SearchBox SearchChange={onSearchChange} />
+                    <SearchBox SearchChange={onSearchChange}/>
                     <CardList filteredRobots={filteredRobots} />
                 </div>
                 
