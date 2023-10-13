@@ -29,3 +29,23 @@ a{
     color: black ;
     overflow: hidden;
 }
+
+.container {
+    text-align: center;
+    font-family: 'Arial', sans-serif;
+    color: #fff;
+  }
+
+  .message {
+    padding-top: 30px;
+    font-size: 1.8rem;
+    letter-spacing: 5px;
+    color: white;
+  }
+
+  .register {
+    font-family:  'SEGA LOGO FONT';
+    font-size: 2rem;
+    letter-spacing: 5px;
+    color: #08827e;
+  }

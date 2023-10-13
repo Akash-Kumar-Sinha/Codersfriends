@@ -6,9 +6,11 @@ const CardList = ({filteredRobots}) => {
     if (!filteredRobots) {
         return <div>Loading...</div>;
       }else if(filteredRobots.length === 0){
-        return <div className="pa4 jsutify-center align-center f3">
-            This person doesn't exit on this globe
-                <p className="f1">Register Now</p>
+        return <div className="container">
+            <div className="message">
+                Username doesn't seems to exist here...
+            </div>
+                <p className="register">Register Now</p>
             </div>
       }
     

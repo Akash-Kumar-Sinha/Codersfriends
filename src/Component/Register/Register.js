@@ -5,7 +5,6 @@ const Register =(props) => {
 
     const[name, setName] = useState('');
     const[link, setLink] = useState('');
-    const [registrationStatus, setRegistrationStatus] = useState(null);
 
     const onNameChange = (event) => {
         setName(event.target.value);
@@ -29,15 +28,10 @@ const Register =(props) => {
                 console.log("User object:", user);
                 console.log(user.id)
                 if(user.id){
-                    setRegistrationStatus(true);
-                    // console.log(registrationStatus)
                     props.onRouteChange('home');
-                }else{
-                    setRegistrationStatus(false);
                 }
             })
             .catch(error => {
-                setRegistrationStatus(false);
                 console.error('Error:', error);
               });
               console.log(name );
