@@ -15,7 +15,7 @@ const CardList = ({filteredRobots}) => {
       }
     
     const CardComponent = filteredRobots.map((user) => {
-        return <Card key={user.id} id={user.id} name={user.name} link={user.linkedin || user.twitter} />
+        return <Card key={user.id} id={user.id} role={user.role} name={user.name} link={user.linkedin || user.twitter} />
     })
     return(
         <div className="cardlist justify-center">

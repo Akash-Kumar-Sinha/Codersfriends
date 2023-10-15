@@ -25,58 +25,92 @@ app.get('/', (req, res) => {
     })
     .catch(error => {
         console.error('Error fetching users:', error);
-        res.status(500).json({ error: 'Internal server error' });
+        res.status(500).json({ error: '1: Internal server error' });
     });
 });
 
 
 app.post('/register', (req, res)=>{
-    const {name, link} = req.body;
+    const {role, name, link} = req.body;
 
-    if (link.startsWith('https://www.linkedin.com/in/')){
+    if(!name || !link || !role){
+        res.status(200).json({message: 'Input can not be empty!'})
+    }
 
-        db.transaction(trx => {
-            trx.insert({
-                name: name,
-                twitter: null,
-                linkedin: link
-            })
-            .into('users')
-            .returning('*')
-            .then((user)=>{
-                trx.commit();
-                res.status(200).json({ message: 'User Registered Successfully' })
-            })
-            .catch((err) => {
-                console.error('Error inserting user:', err);
-                trx.rollback(); 
-                res.status(500).json({ error: 'Internal server error' });
-            });
+    else if (link.startsWith('https://www.linkedin.com/in/')){
+
+        db.select('*')
+        .from('users')
+        .where('name', name)
+        .orWhere('linkedin', link)
+        .then(existingUsers => {
+            if(existingUsers.length > 0){
+                res.status(200).json({message: 'Username or LinkedIn profile already Exist!'})
+            }
+            else{
+                db.transaction(trx => {
+                    trx.insert({
+                        role: role,
+                        name: name,
+                        twitter: null,
+                        linkedin: link
+                    })
+                    .into('users')
+                    .returning('*')
+                    .then((user)=>{
+                        trx.commit();
+                        res.status(200).json({ message: 'User Registered Successfully!' })
+                    })
+                    .catch((err) => {
+                        res.json({ message: 'Registeration unsuccessful!' })
+
+                        console.error('Error inserting user:', err);
+                        trx.rollback(); 
+                        res.status(500).json({ error: '2: Internal server error!' });
+                    });
+                })
+            }
         })
+
+        
 
 
     }else if (link.startsWith('https://x.com/')){
 
-        db.transaction(trx => {
-            trx.insert({
-                name: name,
-                twitter: link,
-                linkedin: null
-            })
-            .into('users')
-            .then((user)=>{
-                trx.commit();
-                res.status(200).json({ message: 'User Registered Successfully' })
-            }).catch((err) => {
-                console.error('Error inserting user:', err);
-                trx.rollback(); 
-                res.status(500).json({ error: 'Internal server error' });
-            });
+        db.select('*')
+        .from('users')
+        .where('name', name)
+        .orWhere('linkedin', link)
+        .then(existingUsers => {
+            if(existingUsers.length > 0){
+                res.status(200).json({message: 'Username or LinkedIn profile already Exist!'})
+            }
+            else{
+                db.transaction(trx => {
+                    trx.insert({
+                        role: role,
+                        name: name,
+                        twitter: null,
+                        linkedin: link
+                    })
+                    .into('users')
+                    .returning('*')
+                    .then((user)=>{
+                        trx.commit();
+                        res.status(200).json({ message: 'User Registered Successfully!' })
+                    })
+                    .catch((err) => {
+                        console.error('Error inserting user:', err);
+                        trx.rollback(); 
+                        res.status(500).json({ error: '3: Internal server error!' });
+                    });
+                })
+            }
         })
         
     }else {
 
-        return res.status(400).json({ error: 'Invalid URL format' });
+        return res.status(400).json({ message: 'Invalid userName or URL format!' });
 
     }
 })

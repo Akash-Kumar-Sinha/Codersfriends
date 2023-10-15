@@ -12,6 +12,7 @@ const App = () => {
     const [route, setRoute] = useState('home');
     const [fetchedData, setFetchedData] = useState([]);
 
+
     const fetchData = () => {
         fetch('http://localhost:3000/', {
             method: 'get',
@@ -62,6 +63,8 @@ const App = () => {
                 <Register onRouteChange={onRouteChange} setRegister={setRegister} fetchData={fetchData}/>
 
             </PopUp>
+
+            
             {route === 'home'
             ?<div>
                 
